@@ -1,0 +1,14 @@
+# Always begin entries with '/' or '**/' to prevent misleading shell glob syntax!
+
+## ignore (folders)
+/.idea/
+/node_modules/
+/platforms/
+/plugins/
+/export/
+/.gradle/
+
+## ignore (files)
+**/.DS_Store
+/npm-debug.log
+/package-lock.json
