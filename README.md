@@ -59,7 +59,7 @@ A string with the format `lang=changes` where lang is the language code and chan
 
 Type: `string`
 
-Specify track for this release. Can be alpha, beta, production or rollout. Default: alpha
+Specify track for this release. Can be internal, alpha, beta, production or rollout. Default: alpha
 
 #### APK
 
@@ -67,4 +67,5 @@ The path to the APK
 
 #### OBB
 
-The path to 1 or more expansion files
+The path to 1 or more expansion files  
+> VersionCode of the first selected APK will be used as versionCode for OBB uploads!

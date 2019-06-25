@@ -1,4 +1,6 @@
 export class GPlayUploaderConfig {
+    static allowedTracks: string[] = ['internal', 'alpha', 'beta', 'production'];
+
     private _configFile: string;
     private _track: string;
     private _authentication: string;
