@@ -2,6 +2,10 @@
 
 This package offers a streamlined way to publish packages in the Google Play Store
 
+# KUDOS  
+
+This library is a rewrite of [jeduan/playup](https://github.com/jeduan/playup). It is written in typescript and uses the newest version of `googleapis`.
+
 ## Install
 
 ```bash
