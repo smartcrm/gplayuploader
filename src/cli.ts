@@ -1,40 +1,56 @@
 #!/usr/bin/env node
 
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
-const path = require("path");
-const program = require("commander");
+import { Command } from 'commander';
+import { GPlayUploaderConfig } from './GPlayUploader/GPlayUploaderConfig';
+import { GPlayUploader } from './GPlayUploader/GPlayUploader';
 
-clear();
-console.log(
-    chalk.green(figlet.textSync("gpu-cli", { horizontalLayout: "full" }))
-);
+class CLIRunner {
+    static run() {
+        const _cliRunner: CLIRunner = new CLIRunner();
+        _cliRunner.main();
+    }
 
-program
-    .description("How to use google-play-uploader")
-    .option(
-        "-c, --config <file>",
-        "Configuration file for google-play-uploader"
-    )
-    .option("-t, --track <track>", "Track for uploading")
-    .option(
-        "-a, --auth <authentication.json>",
-        "JSON file that contains private key and client email"
-    )
-    .option("-r, --recentChanges <message>", "Recent changes message")
-    .option("-f, --apkFile <path/to.apk>", "APK to upload")
-    .option("-o, --obbFile <path/to.obb>", "OBB to upload")
-    .parse(process.argv);
+    main() {
+        const program: Command = this.configureProgram();
+        this.runGPlayUploader(this.getConfig(program));
+    }
 
-console.log("you ordered a pizza with:");
-if (!process.argv.slice(2).length) {
-    program.outputHelp();
+    private configureProgram() {
+        const program: Command = new Command();
+        program
+            .description('How to use gplayuploader')
+            .option('-c, --configFile <file>', 'Configuration file for gplayuploader', '.gplayuploader.config.json')
+            .option('-t, --track [track]', 'Track for uploading')
+            .option(
+                '-a, --authentication <path/to/authentication.json>',
+                'JSON file that contains private key and client email'
+            )
+            .option('-r, --recentChanges [message]', 'Recent changes message', this.collectParameterValues)
+            .option('-f, --apkFiles <path/to.apk>', 'APK to upload', this.collectParameterValues)
+            .option('-o, --obbFiles <path/to.obb>..<path/to.obb>', 'OBB to upload', this.collectParameterValues)
+            // .option('-l, --logLevel', 'Sets log level')
+            .parse(process.argv);
+
+        return program;
+    }
+
+    private collectParameterValues(value: string, previous: string[]) {
+        if (!Array.isArray(previous)) {
+            previous = [];
+        }
+        return previous.concat([value]);
+    }
+
+    private getConfig(parameters) {
+        const config: GPlayUploaderConfig = new GPlayUploaderConfig(parameters);
+
+        return config;
+    }
+
+    private runGPlayUploader(config: GPlayUploaderConfig) {
+        const gPlayUploader: GPlayUploader = new GPlayUploader(config);
+        gPlayUploader.start();
+    }
 }
 
-console.log(program.config);
-console.log(program.track);
-console.log(program.auth);
-console.log(program.recentChanges);
-console.log(program.apkFile);
-console.log(program.obbFile);
+CLIRunner.run();

@@ -1,0 +1,7 @@
+{
+    "track": "alpha",
+    "auth": "./ci-deploy.apiService.json",
+    "recentChanges": "",
+    "apkFiles": ["./platforms/android/app/build/outputs/apk/release/app-release.apk"],
+    "obbFiles": []
+}
