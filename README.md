@@ -1,13 +1,11 @@
 # gplayuploader
 
-Upload APKs to Google Play
-
 This package offers a streamlined way to publish packages in the Google Play Store
 
 ## Install
 
 ```bash
-npm install -g gplayuploader
+npm install https://github.com/smartcrm/gplayuploader
 ```
 
 ## Usage
