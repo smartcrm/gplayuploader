@@ -42,6 +42,7 @@ class CLIRunner {
                 'OBBs to upload (optional)',
                 this.collectParameterValues
             )
+            .option('-p, --rootPath <rootPath>', 'Working path', process.cwd())
             // .option('-l, --logLevel', 'Sets log level')
             .parse(process.argv);
 

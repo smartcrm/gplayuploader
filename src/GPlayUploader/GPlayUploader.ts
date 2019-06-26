@@ -2,6 +2,7 @@ import ApkReader from 'adbkit-apkreader';
 import { createReadStream } from 'fs';
 import { google } from 'googleapis';
 import { GPlayUploaderConfig } from './GPlayUploaderConfig';
+import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
 
 export class GPlayUploader {
     private _gPlayUploaderConfig: GPlayUploaderConfig;
@@ -19,8 +20,12 @@ export class GPlayUploader {
         await this.parseManifest();
         this.publisher = await this.authenticate();
         await this.createEdit();
-        await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, this.uploadSingleAPK);
-        await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, this.uploadSingleOBB);
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, (apkFilePath) => {
+            return this.uploadSingleAPK(apkFilePath);
+        });
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, (obbFilePath) => {
+            return this.uploadSingleOBB(obbFilePath);
+        });
         await this.assignTrackAndReleaseNotes();
         await this.commitChanges();
     }
@@ -62,9 +67,9 @@ export class GPlayUploader {
     async uploadMultiplePaths(pathsToUpload, uploadSinglePathFunction) {
         const uploadQue: Promise<any>[] = [];
 
-        pathsToUpload.forEach(async (filePath) => {
-            const newApkUpload = await uploadSinglePathFunction(filePath);
-            uploadQue.push(newApkUpload);
+        pathsToUpload.forEach((filePath) => {
+            const newUpload: Promise<any> = uploadSinglePathFunction(filePath);
+            uploadQue.push(newUpload);
         });
 
         return Promise.all(uploadQue);
@@ -89,7 +94,7 @@ export class GPlayUploader {
         return apkUpload;
     }
 
-    async uploadSingleOBB() {
+    async uploadSingleOBB(obbFilePath) {
         this._logger(`> Uploading  expansion file(s)`);
         const obbUploadConfig = {
             packageName: this.packageName,
@@ -99,7 +104,7 @@ export class GPlayUploader {
             expansionFileType: 'main',
             media: {
                 mimeType: 'application/octet-stream',
-                body: createReadStream('obbPath')
+                body: createReadStream(obbFilePath)
             }
         };
         const obbUpload = await this.publisher.edits.expansionfiles.upload(obbUploadConfig);
@@ -143,6 +148,7 @@ export class GPlayUploader {
             editId: this.editId,
             packageName: this.packageName
         });
+        console.log(commitedChanges);
         this._logger('> Commited changes');
         return commitedChanges;
     }

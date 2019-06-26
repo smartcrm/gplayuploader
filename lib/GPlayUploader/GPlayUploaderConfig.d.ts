@@ -6,13 +6,23 @@ export declare class GPlayUploaderConfig {
     private _recentChanges;
     private _apkFilePaths;
     private _obbFilePaths;
-    constructor({ configFilePath, track, authenticationPath, recentChanges, apkFilePaths, obbFilePaths }: {
+    private _rootPath;
+    constructor({
+        configFilePath,
+        track,
+        authenticationPath,
+        recentChanges,
+        apkFilePaths,
+        obbFilePaths,
+        rootPath
+    }: {
         configFilePath?: string;
         track?: string;
         authenticationPath?: string;
         recentChanges?: string[];
         apkFilePaths?: string[];
         obbFilePaths?: string[];
+        rootPath: string;
     });
     configFile: string;
     track: string;

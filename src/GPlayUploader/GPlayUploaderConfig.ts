@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs';
 
 export class GPlayUploaderConfig {
     static allowedTracks: string[] = ['internal', 'alpha', 'beta', 'production'];
@@ -10,13 +11,16 @@ export class GPlayUploaderConfig {
     private _apkFilePaths: string[] = [];
     private _obbFilePaths: string[] = [];
 
+    private _rootPath: string;
+
     constructor({
         configFilePath,
         track,
         authenticationPath,
         recentChanges,
         apkFilePaths,
-        obbFilePaths
+        obbFilePaths,
+        rootPath
     }: {
         configFilePath?: string;
         track?: string;
@@ -24,7 +28,10 @@ export class GPlayUploaderConfig {
         recentChanges?: string[];
         apkFilePaths?: string[];
         obbFilePaths?: string[];
+        rootPath: string;
     }) {
+        this._rootPath = rootPath;
+
         this.configFile = configFilePath;
         this.track = track;
         this.authenticationPath = authenticationPath;
@@ -51,7 +58,7 @@ export class GPlayUploaderConfig {
 
     set authenticationPath(value: string) {
         try {
-            this._authenticationPath = path.resolve(__dirname, value);
+            this._authenticationPath = path.resolve(this._rootPath, value);
         } catch (e) {
             throw new Error('authenticationPath is wrong');
         }
@@ -72,7 +79,7 @@ export class GPlayUploaderConfig {
     set apkFilePaths(value: string[]) {
         try {
             value.forEach((pathValue) => {
-                this._apkFilePaths.push(path.resolve(__dirname, pathValue));
+                this._apkFilePaths.push(path.resolve(this._rootPath, pathValue));
             });
         } catch (e) {
             throw new Error('APK Paths are wrong.');
@@ -86,7 +93,7 @@ export class GPlayUploaderConfig {
     set obbFilePaths(value: string[]) {
         try {
             value.forEach((pathValue) => {
-                this._obbFilePaths.push(path.resolve(__dirname, pathValue));
+                this._obbFilePaths.push(path.resolve(this._rootPath, pathValue));
             });
         } catch (e) {
             console.log('No OBBs.');

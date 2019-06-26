@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "api-8132714007555595310-204934",
+    "private_key_id": "d5ea03d07b92313f138639db6782879ac31b5b1d",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8Eupb0zMM3+j+\nPqkBIAutVrCJ73cCeQAFmXdDkNjoB+leUk1MpYl/vEmF5iYlC814XkDv9r3Bn32E\nMmUB1bQPsbYsiFj9Uh3dAIIb1eYEvwTfzzcMTBYk+ixrc3mrdh7BcnmREcKhQkyN\nxeXzikrvsurj2GOd269MFxb5jVtI+mYngrOgCBSkKitXh6Uj24uX2I0EAf4ZD6/t\nKNdPFmJX7HDqN8b6lzdHz/ODkbx/sLHd2wi3mTOh+XPvTf8ioYmwyudob4ziX+B9\nsz86hfq0LJEIEJx1wBXBrhjoLc9l87R8mnfZXY2rhTWVIe9b/FmD5QX3cT+vZ5SH\nRjcxinAFAgMBAAECggEAPjaHnc50Uarz2L6Di2K9Wh6WEVrMZF4AWtnUMN6GUeLk\nGJZjCZqsrDttmsRyE8kes9WB558YUCdhDszYys2VXaesmniT72AtjsCvSWPtTd6e\nTyatj/zPSnYTIYw2UDinndgvTISyfEOBLVisY254sWfe+XXIJhzYlPQCXpSbAL15\niSgfYqomZj/3ZfKXh37aSuwY8N2pEBC3DH6imTuc7wAeQ08sLgYTp5YHhbdvl6Tb\nxALrcYsN9YpsxzbT+9RC5z4Ts69Uxch3QkaTflz/YcZfnev0fCR3gRtjE5f+4vWS\ndU8lywUzSLy1CsWnoc9I0GuKKpgcXQliLsGeQ9YSdQKBgQD6HZaqG/nrNrvOtAgH\neraWpZiNYdMLkNJz41V3obK3vYyw1u31j9noPFYk6IO1LmJ56RhO0iiBopZoxCZ8\n6fQcgw8MPGPBrQAXxhgctDutgRZdtxQtl2jxxsLX+miC/5xb2Q4lyUMCxC2uD/fq\nyxa6lTxiJGqPJSx28xLxIVx/LwKBgQDAf6iOWp/MHFYxldYDo6kfM0mZwriQ/vFH\npNFvnty3Dc2XY7NAdpqqe7iLkibMrMIgqL19Uvu5fTQix0H4NK7n3V1B8ha5I8/W\nAUg9o1JqyG8LUSIA4ajBH4DkDcuBDhz+pX1Jc9Dsfb+7S6XQqVR/LqhTc/aPOdoz\nAo35zChXCwKBgQCW1+N24np+njr0NeWlxR97iZGQqw/iKMyT8eYoyU+Euv+v42AO\nOlycUE9P4R8V1Uy045yyZNLjJBB8TNg9e8eqrmwT4BP1yYWF0QXXwedAA9teV70G\npgs3zbzTDwWbA9fkGOsMZO5SK8i08pJ9e1BQ5RJOylGt1SiU8JJa9NjZJwKBgDVp\nNlOJQZ1Yn3HSqTcJSfumN126cYuJsVi3moTmB0ejRNAkka/pOLDk8yeGvc08ggCd\n0TXcuIuW+chMkTlVJNKg0SdjDHsCPMCcSncPweZvBqCVOmIUOsaa/yBH05dTWygs\nsr6Wq/lySqilLLTgxtkjEQFWw6qp2qkcpFgTFX5RAoGBAMwXJ1AyTiQSF7LrCIxA\nNOzJJjpt+j/SOnY7ps2GiB+ohbTNseTeAXg9Y9OoBt61yEbYAMaGFRaO9vYptGCR\n/7vdyzwZfH/iUCU+ysU/fNOMWYacxcCUV6oFE7w2PAxzzqtxsVuDebFIyhWBngOA\n/5WFcb2xnR9pNtU615mKBuLM\n-----END PRIVATE KEY-----\n",
+    "client_email": "smartcrm-app-ci-deploy@api-8132714007555595310-204934.iam.gserviceaccount.com",
+    "client_id": "110691355290205338947",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/smartcrm-app-ci-deploy%40api-8132714007555595310-204934.iam.gserviceaccount.com"
+}
