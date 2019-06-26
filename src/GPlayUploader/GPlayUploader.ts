@@ -148,7 +148,6 @@ export class GPlayUploader {
             editId: this.editId,
             packageName: this.packageName
         });
-        console.log(commitedChanges);
         this._logger('> Commited changes');
         return commitedChanges;
     }
