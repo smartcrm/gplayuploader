@@ -1,38 +1,36 @@
+import * as path from 'path';
+
 export class GPlayUploaderConfig {
     static allowedTracks: string[] = ['internal', 'alpha', 'beta', 'production'];
 
     private _configFile: string;
     private _track: string;
-    private _authentication: string;
-    private _recentChanges: string[];
-    private _apkFiles: string[];
-    private _obbFiles: string[];
+    private _authenticationPath: string;
+    private _recentChanges: string[] = [];
+    private _apkFilePaths: string[] = [];
+    private _obbFilePaths: string[] = [];
 
     constructor({
-        configFile,
+        configFilePath,
         track,
-        authentication,
+        authenticationPath,
         recentChanges,
-        apkFiles,
-        obbFiles,
+        apkFilePaths,
+        obbFilePaths
     }: {
-        configFile?: string;
+        configFilePath?: string;
         track?: string;
-        authentication?: string;
+        authenticationPath?: string;
         recentChanges?: string[];
-        apkFiles?: string[];
-        obbFiles?: string[];
+        apkFilePaths?: string[];
+        obbFilePaths?: string[];
     }) {
-        this.configFile = configFile;
+        this.configFile = configFilePath;
         this.track = track;
-        this.authentication = authentication;
+        this.authenticationPath = authenticationPath;
         this.recentChanges = recentChanges;
-        this.apkFiles = apkFiles;
-        this.obbFiles = obbFiles;
-    }
-
-    get configFile() {
-        return this._configFile;
+        this.apkFilePaths = apkFilePaths;
+        this.obbFilePaths = obbFilePaths;
     }
 
     set configFile(value: string) {
@@ -47,12 +45,16 @@ export class GPlayUploaderConfig {
         this._track = value;
     }
 
-    get authentication() {
-        return this._authentication;
+    get authenticationPath() {
+        return this._authenticationPath;
     }
 
-    set authentication(value: string) {
-        this._authentication = value;
+    set authenticationPath(value: string) {
+        try {
+            this._authenticationPath = path.resolve(__dirname, value);
+        } catch (e) {
+            throw new Error('authenticationPath is wrong');
+        }
     }
 
     get recentChanges() {
@@ -63,19 +65,56 @@ export class GPlayUploaderConfig {
         this._recentChanges = value;
     }
 
-    get apkFiles() {
-        return this._apkFiles;
+    get apkFilePaths() {
+        return this._apkFilePaths;
     }
 
-    set apkFiles(value: string[]) {
-        this._apkFiles = value;
+    set apkFilePaths(value: string[]) {
+        try {
+            value.forEach((pathValue) => {
+                this._apkFilePaths.push(path.resolve(__dirname, pathValue));
+            });
+        } catch (e) {
+            throw new Error('APK Paths are wrong.');
+        }
     }
 
-    get obbFiles() {
-        return this._obbFiles;
+    get obbFilePaths() {
+        return this._obbFilePaths;
     }
 
-    set obbFiles(value: string[]) {
-        this._obbFiles = value;
+    set obbFilePaths(value: string[]) {
+        try {
+            value.forEach((pathValue) => {
+                this._obbFilePaths.push(path.resolve(__dirname, pathValue));
+            });
+        } catch (e) {
+            console.log('No OBBs.');
+        }
+    }
+
+    isValidConfig() {
+        return this.isApkFilePathsValid() && this.isTrackValid() && this.isAuthenticationPathSet();
+    }
+
+    isApkFilePathsValid() {
+        if (this.apkFilePaths.length < 0) {
+            return false;
+        }
+        this.apkFilePaths.forEach((filePath) => {
+            if (typeof filePath !== 'string' || !Boolean(filePath.trim())) {
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    isTrackValid() {
+        return GPlayUploaderConfig.allowedTracks.includes(this.track);
+    }
+
+    isAuthenticationPathSet() {
+        return typeof this.authenticationPath === 'string' && Boolean(this.authenticationPath.trim());
     }
 }

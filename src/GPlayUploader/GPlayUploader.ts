@@ -1,4 +1,4 @@
-import { ApkReader } from 'adbkit-apkreader';
+import ApkReader from 'adbkit-apkreader';
 import { createReadStream } from 'fs';
 import { google } from 'googleapis';
 import { GPlayUploaderConfig } from './GPlayUploaderConfig';
@@ -19,15 +19,15 @@ export class GPlayUploader {
         await this.parseManifest();
         this.publisher = await this.authenticate();
         await this.createEdit();
-        await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFiles, this.uploadSingleAPK);
-        await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFiles, this.uploadSingleOBB);
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, this.uploadSingleAPK);
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, this.uploadSingleOBB);
         await this.assignTrackAndReleaseNotes();
         await this.commitChanges();
     }
 
     async parseManifest() {
         this._logger('> Parsing manifest');
-        const reader: ApkReader = await ApkReader.open(this._gPlayUploaderConfig.apkFiles);
+        const reader: ApkReader = await ApkReader.open(this._gPlayUploaderConfig.apkFilePaths[0]);
         const manifest = await reader.readManifest();
         this.packageName = manifest.package;
         this._logger(`> Detected package name ${this.packageName}`);
@@ -37,13 +37,13 @@ export class GPlayUploader {
     async authenticate() {
         this._logger('> Authenticating');
         const client = await google.auth.getClient({
-            keyFile: this._gPlayUploaderConfig.authentication,
-            scopes: 'https://www.googleapis.com/auth/androidpublisher',
+            keyFile: this._gPlayUploaderConfig.authenticationPath,
+            scopes: 'https://www.googleapis.com/auth/androidpublisher'
         });
 
         const publisher = google.androidpublisher({
             version: 'v3',
-            auth: client,
+            auth: client
         });
 
         this._logger('> Authenticated succesfully');
@@ -78,8 +78,8 @@ export class GPlayUploader {
             editId: this.editId,
             media: {
                 mimeType: 'application/vnd.android.package-archive',
-                body: createReadStream(apkFilePath),
-            },
+                body: createReadStream(apkFilePath)
+            }
         };
         const apkUpload = await this.publisher.edits.apks.upload(uploadApkConfig);
         this.versionCodes.push(apkUpload.data.versionCode);
@@ -99,8 +99,8 @@ export class GPlayUploader {
             expansionFileType: 'main',
             media: {
                 mimeType: 'application/octet-stream',
-                body: createReadStream('obbPath'),
-            },
+                body: createReadStream('obbPath')
+            }
         };
         const obbUpload = await this.publisher.edits.expansionfiles.upload(obbUploadConfig);
         return obbUpload;
@@ -119,10 +119,10 @@ export class GPlayUploader {
                     {
                         versionCodes: this.versionCodes,
                         releaseNotes: this.getReleaseNotes(),
-                        status: 'completed',
-                    },
-                ],
-            },
+                        status: 'completed'
+                    }
+                ]
+            }
         };
 
         const newTrack = await this.publisher.edits.tracks.update(newTrackConfig);
@@ -141,7 +141,7 @@ export class GPlayUploader {
         this._logger('> Commiting changes');
         const commitedChanges = await this.publisher.edits.commit({
             editId: this.editId,
-            packageName: this.packageName,
+            packageName: this.packageName
         });
         this._logger('> Commited changes');
         return commitedChanges;

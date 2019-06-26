@@ -12,25 +12,36 @@ class CLIRunner {
 
     main() {
         const program: Command = this.configureProgram();
-        this.runGPlayUploader(this.getConfig(program));
+        const config: GPlayUploaderConfig = this.getConfig(program);
+        if (config.isValidConfig()) {
+            this.runGPlayUploader(config);
+        } else {
+            console.log('Wrong parameters');
+            program.outputHelp();
+            throw new Error('Wrong parameters');
+        }
     }
 
     private configureProgram() {
         const program: Command = new Command();
         program
             .description('How to use gplayuploader')
-            .option('-c, --configFile <file>', 'Configuration file for gplayuploader', '.gplayuploader.config.json')
+            // .option('-c, --configFilePath <file>', 'Configuration file for gplayuploader')
             .option(
                 '-t, --track [track]',
                 `Track for uploading. Available tracks: ${GPlayUploaderConfig.allowedTracks}`
             )
             .option(
-                '-a, --authentication <path/to/authentication.json>',
+                '-a, --authenticationPath <path/to/authentication.json>',
                 'JSON file that contains private key and client email'
             )
             .option('-r, --recentChanges [message]', 'Recent changes message', this.collectParameterValues)
-            .option('-f, --apkFiles <path/to.apk>', 'APKs to upload', this.collectParameterValues)
-            .option('-o, --obbFiles <path/to.obb>..<path/to.obb>', 'OBBs to upload (optional)', this.collectParameterValues)
+            .option('-f, --apkFilePaths <path/to.apk>', 'APKs to upload', this.collectParameterValues)
+            .option(
+                '-o, --obbFilePaths <path/to.obb>..<path/to.obb>',
+                'OBBs to upload (optional)',
+                this.collectParameterValues
+            )
             // .option('-l, --logLevel', 'Sets log level')
             .parse(process.argv);
 

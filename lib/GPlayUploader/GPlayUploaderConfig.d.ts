@@ -2,22 +2,26 @@ export declare class GPlayUploaderConfig {
     static allowedTracks: string[];
     private _configFile;
     private _track;
-    private _authentication;
+    private _authenticationPath;
     private _recentChanges;
-    private _apkFiles;
-    private _obbFiles;
-    constructor({ configFile, track, authentication, recentChanges, apkFiles, obbFiles, }: {
-        configFile?: string;
+    private _apkFilePaths;
+    private _obbFilePaths;
+    constructor({ configFilePath, track, authenticationPath, recentChanges, apkFilePaths, obbFilePaths }: {
+        configFilePath?: string;
         track?: string;
-        authentication?: string;
+        authenticationPath?: string;
         recentChanges?: string[];
-        apkFiles?: string[];
-        obbFiles?: string[];
+        apkFilePaths?: string[];
+        obbFilePaths?: string[];
     });
     configFile: string;
     track: string;
-    authentication: string;
+    authenticationPath: string;
     recentChanges: string[];
-    apkFiles: string[];
-    obbFiles: string[];
+    apkFilePaths: string[];
+    obbFilePaths: string[];
+    isValidConfig(): boolean;
+    isApkFilePathsValid(): boolean;
+    isTrackValid(): boolean;
+    isAuthenticationPathSet(): boolean;
 }

@@ -1,5 +1,7 @@
 {
+    "extends": ["tslint-plugin-prettier", "tslint-config-prettier"],
     "rules": {
+        "prettier": true,
         "class-name": true,
         "comment-format": [true, "check-space"],
         "indent": [true, "spaces"],
@@ -22,13 +24,6 @@
             }
         ],
         "variable-name": [true, "ban-keywords"],
-        "whitespace": [
-            true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ]
+        "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]
     }
 }

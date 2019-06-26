@@ -5,7 +5,14 @@ export declare class GPlayUploaderConfig {
     private _recentChanges;
     private _apkFiles;
     private _obbFiles;
-    constructor({ configFile, track, authentication, recentChanges, apkFiles, obbFiles, }: {
+    constructor({
+        configFile,
+        track,
+        authentication,
+        recentChanges,
+        apkFiles,
+        obbFiles
+    }: {
         configFile?: string;
         track?: string;
         authentication?: string;
