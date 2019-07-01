@@ -17,21 +17,17 @@ export class GPlayUploader {
     }
 
     async start() {
-        try {
-            await this.parseManifest();
-            this.publisher = await this.authenticate();
-            await this.createEdit();
-            await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, (apkFilePath) => {
-                return this.uploadSingleAPK(apkFilePath);
-            });
-            await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, (obbFilePath) => {
-                return this.uploadSingleOBB(obbFilePath);
-            });
-            await this.assignTrackAndReleaseNotes();
-            await this.commitChanges();
-        } catch (error) {
-            throw new Error(error);
-        }
+        await this.parseManifest();
+        this.publisher = await this.authenticate();
+        await this.createEdit();
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, (apkFilePath) => {
+            return this.uploadSingleAPK(apkFilePath);
+        });
+        await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, (obbFilePath) => {
+            return this.uploadSingleOBB(obbFilePath);
+        });
+        await this.assignTrackAndReleaseNotes();
+        await this.commitChanges();
     }
 
     async parseManifest() {

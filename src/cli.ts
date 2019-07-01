@@ -12,13 +12,15 @@ class CLIRunner {
 
     main() {
         const program: Command = this.configureProgram();
-        const config: GPlayUploaderConfig = this.getConfig(program);
-        if (config.isValidConfig()) {
-            this.runGPlayUploader(config);
-        } else {
-            console.log('Wrong parameters');
+        try {
+            const config: GPlayUploaderConfig = this.getConfig(program);
+            if (config.isValidConfig()) {
+                this.runGPlayUploader(config);
+            }
+        } catch (error) {
             program.outputHelp();
-            throw new Error('Wrong parameters');
+            console.error(error);
+            process.exit(1);
         }
     }
 
