@@ -5,22 +5,25 @@ import { GPlayUploaderConfig } from './GPlayUploader/GPlayUploaderConfig';
 import { GPlayUploader } from './GPlayUploader/GPlayUploader';
 
 class CLIRunner {
-    static run() {
-        const _cliRunner: CLIRunner = new CLIRunner();
-        _cliRunner.main();
+    static async run() {
+        try {
+            const _cliRunner: CLIRunner = new CLIRunner();
+            await _cliRunner.main();
+        } catch (error) {
+            process.exit(1);
+        }
     }
 
-    main() {
+    async main() {
         const program: Command = this.configureProgram();
         try {
             const config: GPlayUploaderConfig = this.getConfig(program);
             if (config.isValidConfig()) {
-                this.runGPlayUploader(config);
+                await this.runGPlayUploader(config);
             }
         } catch (error) {
             program.outputHelp();
-            console.error(error);
-            process.exit(1);
+            throw error;
         }
     }
 
@@ -64,9 +67,9 @@ class CLIRunner {
         return config;
     }
 
-    private runGPlayUploader(config: GPlayUploaderConfig) {
+    private async runGPlayUploader(config: GPlayUploaderConfig) {
         const gPlayUploader: GPlayUploader = new GPlayUploader(config);
-        gPlayUploader.start();
+        return await gPlayUploader.start();
     }
 }
 
