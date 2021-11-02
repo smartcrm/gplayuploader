@@ -1,9 +1,12 @@
 import ApkReader from 'adbkit-apkreader';
 import { readManifest } from 'node-aab-parser';
 import { createReadStream } from 'fs';
-import { google } from 'googleapis';
+import { androidpublisher_v3, google } from 'googleapis';
 import { GPlayUploaderConfig } from './GPlayUploaderConfig';
 import { DH_UNABLE_TO_CHECK_GENERATOR } from 'constants';
+import Params$Resource$Edits$Apks$Upload = androidpublisher_v3.Params$Resource$Edits$Apks$Upload;
+import Androidpublisher = androidpublisher_v3.Androidpublisher;
+import Params$Resource$Edits$Bundles$Upload = androidpublisher_v3.Params$Resource$Edits$Bundles$Upload;
 
 export class GPlayUploader {
     private _gPlayUploaderConfig: GPlayUploaderConfig;
@@ -11,7 +14,7 @@ export class GPlayUploader {
     private packageName: string = '';
     private versionCodes: string[] = [];
     private editId: string = '';
-    private publisher: any;
+    private publisher: Androidpublisher;
 
     constructor(gPlayUploaderConfig: GPlayUploaderConfig) {
         this._gPlayUploaderConfig = gPlayUploaderConfig;
@@ -23,10 +26,10 @@ export class GPlayUploader {
             this.publisher = await this.authenticate();
             await this.createEdit();
             await this.uploadMultiplePaths(this._gPlayUploaderConfig.apkFilePaths, (apkFilePath) => {
-                return this.uploadSingleAPK(apkFilePath);
+                return this.uploadSinglePath(apkFilePath);
             });
             await this.uploadMultiplePaths(this._gPlayUploaderConfig.obbFilePaths, (obbFilePath) => {
-                return this.uploadSingleOBB(obbFilePath);
+                return this.uploadSinglePath(obbFilePath);
             });
             await this.assignTrackAndReleaseNotes();
             await this.commitChanges();
@@ -55,7 +58,7 @@ export class GPlayUploader {
         return path.endsWith('.aab');
     }
 
-    async authenticate() {
+    async authenticate(): Promise<androidpublisher_v3.Androidpublisher> {
         this._logger('> Authenticating');
         const client = await google.auth.getClient({
             keyFile: this._gPlayUploaderConfig.authenticationPath,
@@ -91,10 +94,17 @@ export class GPlayUploader {
         return Promise.all(uploadQue);
     }
 
+    async uploadSinglePath(filePath) {
+        if (this.isAABFilePath(filePath)) {
+            return this.uploadSingleAppBundle(filePath);
+        }
+        return this.uploadSingleAPK(filePath);
+    }
+
     async uploadSingleAPK(apkFilePath) {
         this._logger(`> Uploading APK`);
 
-        const uploadApkConfig = {
+        const uploadApkConfig: Params$Resource$Edits$Apks$Upload = {
             packageName: this.packageName,
             editId: this.editId,
             media: {
@@ -103,16 +113,34 @@ export class GPlayUploader {
             }
         };
         const apkUpload = await this.publisher.edits.apks.upload(uploadApkConfig);
-        this.versionCodes.push(apkUpload.data.versionCode);
+        this.versionCodes.push(apkUpload.data.versionCode.toString());
         this._logger(
             `> Uploaded ${apkFilePath} with version code ${apkUpload.data.versionCode} and SHA1 ${apkUpload.data.binary.sha1}`
         );
         return apkUpload;
     }
 
+    async uploadSingleAppBundle(aabFilePath) {
+        this._logger(`> Uploading App Bundle`);
+
+        const uploadAabConfig: Params$Resource$Edits$Bundles$Upload = {
+            packageName: this.packageName,
+            editId: this.editId,
+            media: {
+                body: createReadStream(aabFilePath)
+            }
+        };
+        const bundleUpload = await this.publisher.edits.bundles.upload(uploadAabConfig);
+        this.versionCodes.push(bundleUpload.data.versionCode.toString());
+        this._logger(
+            `> Uploaded ${aabFilePath} with version code ${bundleUpload.data.versionCode} and SHA1 ${bundleUpload.data.sha1}`
+        );
+        return bundleUpload;
+    }
+
     async uploadSingleOBB(obbFilePath) {
-        this._logger(`> Uploading  expansion file(s)`);
-        const obbUploadConfig = {
+        this._logger(`> Uploading expansion file(s)`);
+        const obbUploadConfig: any = {
             packageName: this.packageName,
             editId: this.editId,
             // TODO: find out a petter way to set up the right versioncodes.
@@ -146,7 +174,7 @@ export class GPlayUploader {
             }
         };
 
-        const newTrack = await this.publisher.edits.tracks.update(newTrackConfig);
+        const newTrack: any = await this.publisher.edits.tracks.update(newTrackConfig);
         this._logger(`> Assigned APK to ${newTrack.track} track`);
         return newTrack;
     }
