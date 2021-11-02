@@ -8,6 +8,8 @@ export declare class GPlayUploader {
     constructor(gPlayUploaderConfig: GPlayUploaderConfig);
     start(): Promise<void>;
     parseManifest(): Promise<any>;
+    getManifestFromPath(path: string): Promise<any>;
+    isAABFilePath(path: string): boolean;
     authenticate(): Promise<import('googleapis').androidpublisher_v3.Androidpublisher>;
     createEdit(): Promise<any>;
     uploadMultiplePaths(pathsToUpload: any, uploadSinglePathFunction: any): Promise<any[]>;
