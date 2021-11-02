@@ -7,8 +7,8 @@ export declare class GPlayUploader {
     private publisher;
     constructor(gPlayUploaderConfig: GPlayUploaderConfig);
     start(): Promise<void>;
-    parseManifest(): Promise<any>;
-    getManifestFromPath(path: string): Promise<any>;
+    parseManifest(): Promise<void>;
+    getPackageNameFromManifest(pathToPackage: string): Promise<any>;
     isAABFilePath(path: string): boolean;
     authenticate(): Promise<import('googleapis').androidpublisher_v3.Androidpublisher>;
     createEdit(): Promise<any>;
