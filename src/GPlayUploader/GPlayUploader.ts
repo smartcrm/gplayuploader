@@ -38,18 +38,17 @@ export class GPlayUploader {
 
     async parseManifest() {
         this._logger('> Parsing manifest');
-        const manifest = await this.getManifestFromPath(this._gPlayUploaderConfig.apkFilePaths[0]);
-        this.packageName = manifest.package;
+        this.packageName = await this.getPackageNameFromManifest(this._gPlayUploaderConfig.apkFilePaths[0]);
         this._logger(`> Detected package name ${this.packageName}`);
-        return manifest;
     }
 
-    async getManifestFromPath(path: string) {
-        if (this.isAABFilePath(path)) {
-            return await readManifest(path);
+    async getPackageNameFromManifest(pathToPackage: string) {
+        if (this.isAABFilePath(pathToPackage)) {
+            const manifest = await readManifest(pathToPackage);
+            return manifest.packageName;
         }
-        const reader: ApkReader = await ApkReader.open(path);
-        return await reader.readManifest();
+        const manifest = await ApkReader.open(pathToPackage).readManifest();
+        return await manifest.package;
     }
 
     isAABFilePath(path: string): boolean {
