@@ -38,6 +38,7 @@
     "dependencies": {
         "adbkit-apkreader": "3.1.2",
         "commander": "2.20.0",
-        "googleapis": "40.0.0"
+        "googleapis": "40.0.0",
+        "node-aab-parser": "1.0.2"
     }
 }

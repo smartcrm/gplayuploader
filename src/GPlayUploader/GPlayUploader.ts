@@ -1,4 +1,5 @@
 import ApkReader from 'adbkit-apkreader';
+import { readManifest } from 'node-aab-parser';
 import { createReadStream } from 'fs';
 import { google } from 'googleapis';
 import { GPlayUploaderConfig } from './GPlayUploaderConfig';
@@ -37,11 +38,22 @@ export class GPlayUploader {
 
     async parseManifest() {
         this._logger('> Parsing manifest');
-        const reader: ApkReader = await ApkReader.open(this._gPlayUploaderConfig.apkFilePaths[0]);
-        const manifest = await reader.readManifest();
+        const manifest = await this.getManifestFromPath(this._gPlayUploaderConfig.apkFilePaths[0]);
         this.packageName = manifest.package;
         this._logger(`> Detected package name ${this.packageName}`);
         return manifest;
+    }
+
+    async getManifestFromPath(path: string) {
+        if (this.isAABFilePath(path)) {
+            return await readManifest(path);
+        }
+        const reader: ApkReader = await ApkReader.open(path);
+        return await reader.readManifest();
+    }
+
+    isAABFilePath(path: string): boolean {
+        return path.endsWith('.aab');
     }
 
     async authenticate() {
