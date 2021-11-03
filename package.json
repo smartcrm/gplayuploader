@@ -1,7 +1,7 @@
 {
     "name": "gplayuploader",
     "version": "1.0.0",
-    "description": "uploads apk to playstore",
+    "description": "uploads apk or app bundle to playstore",
     "main": "./lib/GPlayUploader/GPlayUploadProcess.js",
     "bin": {
         "gplayuploader": "./lib/cli.js"

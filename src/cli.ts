@@ -49,7 +49,7 @@ class CLIRunner {
             )
             .option('-r, --recentChanges [message]', 'Recent changes message', CLIRunner.collectParameterValues)
             .option(
-                '-f, --filePaths <path/to.app>..<path/>to.app>',
+                '-f, --filePaths <path/to.app>..<path/to.app>',
                 'path to apk or app bundle',
                 CLIRunner.collectParameterValues
             )
@@ -78,7 +78,6 @@ class CLIRunner {
 
     // Main method to instantiate GPlayUploadProcess and its dependencies
     private static async runGPlayUploader(config: GPlayUploaderConfig) {
-        console.log('Hi');
         const authenticator = new GPlayAuthenticatorV3();
         const publisherAPI: AndroidPublisher = await authenticator.authenticate(config.authenticationPath);
 
