@@ -1,14 +1,14 @@
-import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
-import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
-import { AppUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
-import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
-import { UploadConfigGenerator } from 'GPlayUploader/AndroidPublisherAPI/UploadConfigGenerator';
-import { FileUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/FileUploadConfig';
-import { ObbUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/ObbUploadConfig';
-import { TrackUpdateResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateResult';
+import { AndroidPublisher } from '../AndroidPublisher';
+import { BasicUploadParameters } from '../InterfaceTypes/BasicUploadParameters';
+import { TrackUpdateParameters } from '../InterfaceTypes/TrackUpdateParameters';
+import { AppUploadResult } from '../InterfaceTypes/AppUploadResult';
+import { ObbUploadParameters } from '../InterfaceTypes/ObbUploadParameters';
+import { UploadConfigGenerator } from '../UploadConfigGenerator';
+import { FileUploadConfig } from './Utilities/FileUploadConfig';
+import { ObbUploadConfig } from './Utilities/ObbUploadConfig';
+import { TrackUpdateResult } from '../InterfaceTypes/TrackUpdateResult';
 import { androidpublisher_v3 } from 'googleapis';
-import { ObbUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadResult';
+import { ObbUploadResult } from '../InterfaceTypes/ObbUploadResult';
 export declare class AndroidPublisherV3 implements AndroidPublisher {
     private readonly publisher;
     private readonly uploadConfigGenerator;

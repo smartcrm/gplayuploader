@@ -1,5 +1,5 @@
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
-import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
+import { BasicUploadParameters } from './InterfaceTypes/BasicUploadParameters';
+import { ObbUploadParameters } from './InterfaceTypes/ObbUploadParameters';
 /**
  * Generator to create configs for the android publisher api. Only re-implement if the input parameters of the android
  * publisher API change.

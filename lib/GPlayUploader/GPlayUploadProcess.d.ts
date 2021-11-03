@@ -1,8 +1,8 @@
 import { GPlayUploaderConfig } from './GPlayUploaderConfig';
-import { ManifestParser } from 'GPlayUploader/UploadSteps/ManifestParser';
-import { GPlayEditCreator } from 'GPlayUploader/UploadSteps/GPlayEditCreator';
-import { GPlayUploadCompleter } from 'GPlayUploader/UploadSteps/GPlayUploadCompleter';
-import { GPlayFileUploader } from 'GPlayUploader/UploadSteps/GPlayFileUploader';
+import { ManifestParser } from './UploadSteps/ManifestParser';
+import { GPlayEditCreator } from './UploadSteps/GPlayEditCreator';
+import { GPlayUploadCompleter } from './UploadSteps/GPlayUploadCompleter';
+import { GPlayFileUploader } from './UploadSteps/GPlayFileUploader';
 export declare class GPlayUploadProcess {
     private readonly manifestParser;
     private readonly editCreator;

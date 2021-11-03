@@ -1,6 +1,6 @@
-import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
-import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
+import { AndroidPublisher } from '../AndroidPublisherAPI/AndroidPublisher';
+import { TrackUpdateParameters } from '../AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
+import { BasicUploadParameters } from '../AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
 export declare class GPlayUploadCompleter {
     private readonly publisher;
     constructor(publisher: AndroidPublisher);

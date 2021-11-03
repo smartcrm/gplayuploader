@@ -1,4 +1,4 @@
-import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
+import { AndroidPublisher } from '../AndroidPublisherAPI/AndroidPublisher';
 export declare class GPlayEditCreator {
     private readonly publisher;
     constructor(publisher: AndroidPublisher);

@@ -1,4 +1,4 @@
-import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
+import { ObbUploadParameters } from './ObbUploadParameters';
 export interface TrackUpdateParameters extends ObbUploadParameters {
     track: string;
 }

@@ -1,7 +1,7 @@
-import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
-import { AppUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
-import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
+import { AndroidPublisher } from '../AndroidPublisherAPI/AndroidPublisher';
+import { BasicUploadParameters } from '../AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
+import { AppUploadResult } from '../AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
+import { ObbUploadParameters } from '../AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
 export declare class GPlayFileUploader {
     protected readonly publisher: AndroidPublisher;
     constructor(publisher: AndroidPublisher);

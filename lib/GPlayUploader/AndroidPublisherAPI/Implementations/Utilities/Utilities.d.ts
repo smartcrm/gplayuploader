@@ -1,4 +1,4 @@
-import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
+import { TrackUpdateParameters } from '../../InterfaceTypes/TrackUpdateParameters';
 export declare function getTrackUpdateConfig(
     updateParameters: TrackUpdateParameters
 ): {

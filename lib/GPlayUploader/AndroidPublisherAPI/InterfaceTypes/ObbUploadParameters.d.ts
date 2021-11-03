@@ -1,4 +1,4 @@
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
+import { BasicUploadParameters } from './BasicUploadParameters';
 export interface ObbUploadParameters extends BasicUploadParameters {
     versionCodes: number[];
 }

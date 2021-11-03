@@ -1,9 +1,9 @@
-import { AppUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
-import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
-import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
-import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
-import { TrackUpdateResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateResult';
-import { ObbUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadResult';
+import { AppUploadResult } from './InterfaceTypes/AppUploadResult';
+import { BasicUploadParameters } from './InterfaceTypes/BasicUploadParameters';
+import { ObbUploadParameters } from './InterfaceTypes/ObbUploadParameters';
+import { TrackUpdateParameters } from './InterfaceTypes/TrackUpdateParameters';
+import { TrackUpdateResult } from './InterfaceTypes/TrackUpdateResult';
+import { ObbUploadResult } from './InterfaceTypes/ObbUploadResult';
 /**
  * Abstraction of the Android Publisher API. If you want to update this project to a newer version of the API you only
  * have to re-implement this interface.
