@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import { GPlayAuthenticator } from 'GPlayUploader/AndroidPublisherAPI/GPlayAuthenticator';
 import { AndroidPublisherV3 } from 'GPlayUploader/AndroidPublisherAPI/Implementations/AndroidPublisherV3';
 import { UploadConfigGeneratorV3 } from 'GPlayUploader/AndroidPublisherAPI/Implementations/UploadConfigGeneratorV3';
+import { log } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
 
 export class GPlayAuthenticatorV3 implements GPlayAuthenticator {
     async authenticate(authenticationPath: string): Promise<AndroidPublisherV3> {
