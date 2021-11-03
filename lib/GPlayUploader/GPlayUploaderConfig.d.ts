@@ -4,7 +4,7 @@ export declare class GPlayUploaderConfig {
     private _track;
     private _authenticationPath;
     private _recentChanges;
-    private _apkFilePaths;
+    private _filePaths;
     private _obbFilePaths;
     private _rootPath;
     constructor({
@@ -28,10 +28,10 @@ export declare class GPlayUploaderConfig {
     track: string;
     authenticationPath: string;
     recentChanges: string[];
-    apkFilePaths: string[];
+    filePaths: string[];
     obbFilePaths: string[];
     isValidConfig(): boolean;
-    isApkFilePathsValid(): boolean;
+    isFilePathsValid(): boolean;
     isTrackValid(): boolean;
     isAuthenticationPathSet(): boolean;
 }
