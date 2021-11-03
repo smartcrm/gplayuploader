@@ -1,16 +1,16 @@
-import { AndroidPublisher } from 'GPlayUploader/Utilities/Types';
+import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { log } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
 
 export class GPlayEditCreator {
-    private readonly publisher: AndroidPublisher;
-    e;
-    constructor(publisher: AndroidPublisher) {
+    private readonly publisher: AndroidPublisherAPI;
+
+    constructor(publisher: AndroidPublisherAPI) {
         this.publisher = publisher;
     }
 
-    async createEdit(packageName: string): Promise<string> {
+    async getEditId(packageName: string): Promise<string> {
         log('> Creating edit');
-        const edit = await this.publisher.edits.insert({ packageName: packageName });
-        const editId = edit.data.id;
+        const editId = this.publisher.generateEditId(packageName);
         log(`> Created edit with id ${editId}`);
         return editId;
     }

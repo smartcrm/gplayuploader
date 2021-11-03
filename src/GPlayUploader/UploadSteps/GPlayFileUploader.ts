@@ -1,37 +1,43 @@
-import { createReadStream } from 'fs';
-import { AndroidPublisher, GPlayUploadConfiguration, UploadConfiguration } from 'GPlayUploader/Utilities/Types';
+import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
+import { AppUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
+import { logAppUploadStartMessage, logAppUploadSuccessMessage } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
+import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
 
-export abstract class GPlayFileUploader<ResultType> {
-    protected readonly publisher: AndroidPublisher;
+export class GPlayFileUploader {
+    protected readonly publisher: AndroidPublisherAPI;
 
-    constructor(publisher: AndroidPublisher) {
+    constructor(publisher: AndroidPublisherAPI) {
         this.publisher = publisher;
     }
 
-    abstract async upload(filePath: string, configuration: UploadConfiguration): Promise<ResultType>;
-
-    protected generateUploadConfigFor<T extends GPlayUploadConfiguration>(
-        filePath: string,
-        configuration: UploadConfiguration
-    ): T {
-        const uploadConfig: GPlayUploadConfiguration = {
-            packageName: configuration.packageName,
-            editId: configuration.editId,
-            media: {
-                body: createReadStream(filePath)
-            }
-        };
-        if (configuration.mimeType !== undefined) {
-            uploadConfig.media.mimeType = configuration.mimeType;
-        }
-        return uploadConfig as T;
+    async uploadAppPaths(filePaths: string[], uploadParameters: BasicUploadParameters): Promise<AppUploadResult[]> {
+        return await this.uploadMultiplePaths(filePaths, async (filePath) => {
+            return await this.uploadAppPath(filePath, uploadParameters);
+        });
     }
 
-    protected logSuccessMessage(versionCode: number, filePath: string, sha1Hash: string): void {
-        log(this.getUploadSuccessMessage(filePath, versionCode, sha1Hash));
+    async uploadObbFilePaths(filePaths: string[], uploadParameters: ObbUploadParameters): Promise<void> {
+        await this.uploadMultiplePaths(filePaths, (obbFilePath) => {
+            return this.publisher.uploadObb(obbFilePath, uploadParameters);
+        });
     }
 
-    protected getUploadSuccessMessage(filePath: string, versionCode: number, sha1Hash: string): string {
-        return `> Uploaded ${filePath} with version code ${versionCode} and SHA1 ${sha1Hash}`;
+    private async uploadAppPath(filePath: string, uploadParameters: BasicUploadParameters): Promise<AppUploadResult> {
+        logAppUploadStartMessage(filePath);
+        const uploadResult = await this.publisher.uploadApp(filePath, uploadParameters);
+        logAppUploadSuccessMessage(uploadResult.versionCode, filePath, uploadResult.sha1);
+        return uploadResult;
+    }
+
+    private async uploadMultiplePaths<T = any>(pathsToUpload, uploadSinglePathFunction): Promise<T[]> {
+        const uploadQue: Promise<T>[] = [];
+
+        pathsToUpload.forEach((filePath) => {
+            const newUpload: Promise<T> = uploadSinglePathFunction(filePath);
+            uploadQue.push(newUpload);
+        });
+
+        return Promise.all(uploadQue);
     }
 }

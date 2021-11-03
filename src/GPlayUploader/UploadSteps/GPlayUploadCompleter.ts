@@ -1,45 +1,24 @@
-import { AndroidPublisher, UploadConfiguration } from 'GPlayUploader/Utilities/Types';
-import { GPlayUploaderConfig } from 'GPlayUploader/GPlayUploaderConfig';
+import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { log } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
+import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
+import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
 
 export class GPlayUploadCompleter {
-    private readonly publisher: AndroidPublisher;
+    private readonly publisher: AndroidPublisherAPI;
 
-    constructor(publisher: AndroidPublisher) {
+    constructor(publisher: AndroidPublisherAPI) {
         this.publisher = publisher;
     }
 
-    async assignTrackAndReleaseNotes(
-        uploaderConfig: GPlayUploaderConfig,
-        uploadConfig: UploadConfiguration
-    ): Promise<void> {
-        log(`> Assigning APK to ${uploaderConfig.track} track`);
-
-        const newTrackConfig = {
-            packageName: uploadConfig.packageName,
-            editId: uploadConfig.editId,
-            track: uploaderConfig.track,
-            resource: {
-                track: uploaderConfig.track,
-                releases: [
-                    {
-                        versionCodes: uploadConfig.versionCodes,
-                        releaseNotes: [],
-                        status: 'completed'
-                    }
-                ]
-            }
-        };
-
-        const newTrack = await this.publisher.edits.tracks.update(newTrackConfig);
-        log(`> Assigned APK to ${newTrack.data.track} track`);
+    async assignTrackAndReleaseNotes(updateParameters: TrackUpdateParameters): Promise<void> {
+        log(`> Assigning APK to ${updateParameters.track} track`);
+        const trackUpdateResult = await this.publisher.updateTrack(updateParameters);
+        log(`> Assigned APK to ${trackUpdateResult.track} track`);
     }
 
-    async commitChanges(packageName: string, editId: string): Promise<void> {
+    async commitChanges(commitParameters: BasicUploadParameters): Promise<void> {
         log('> Commiting changes');
-        const commitedChanges = await this.publisher.edits.commit({
-            editId: editId,
-            packageName: packageName
-        });
+        await this.publisher.commitChanges(commitParameters);
         log('> Commited changes');
     }
 }
