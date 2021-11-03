@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { GPlayUploaderConfig } from './GPlayUploader/GPlayUploaderConfig';
-import { GPlayUploader } from './GPlayUploader/GPlayUploader';
-import { GPlayAuthenticator } from 'GPlayUploader/GPlayAuthenticator';
-import { AndroidPublisher } from 'GPlayUploader/Utilities/Types';
+import { GPlayUploaderConfig } from 'GPlayUploader/GPlayUploaderConfig';
+import { GPlayUploadProcess } from 'GPlayUploader/GPlayUploadProcess';
+import { GPlayAuthenticatorV3 } from 'GPlayUploader/AndroidPublisherAPI/Implementations/GPlayAuthenticatorV3';
 import { GPlayEditCreator } from 'GPlayUploader/UploadSteps/GPlayEditCreator';
-import { GPlayApkUploader } from 'GPlayUploader/UploadSteps/GPlayApkUploader';
-import { GPlayBundleUploader } from 'GPlayUploader/UploadSteps/GPlayBundleUploader';
-import { GPlayObbUploader } from 'GPlayUploader/UploadSteps/GPlayObbUploader';
 import { GPlayUploadCompleter } from 'GPlayUploader/UploadSteps/GPlayUploadCompleter';
 import { ManifestParser } from 'GPlayUploader/UploadSteps/ManifestParser';
+import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { GPlayFileUploader } from 'GPlayUploader/UploadSteps/GPlayFileUploader';
 
 class CLIRunner {
     static async run() {
@@ -22,12 +20,13 @@ class CLIRunner {
         }
     }
 
+    // Main method of the application
     async main() {
-        const program: Command = this.configureProgram();
+        const program: Command = CLIRunner.configureProgram();
         try {
-            const config: GPlayUploaderConfig = this.getConfig(program);
+            const config: GPlayUploaderConfig = CLIRunner.getConfig(program);
             if (config.isValidConfig()) {
-                await this.runGPlayUploader(config);
+                await CLIRunner.runGPlayUploader(config);
             }
         } catch (error) {
             program.outputHelp();
@@ -35,7 +34,7 @@ class CLIRunner {
         }
     }
 
-    private configureProgram() {
+    private static configureProgram() {
         const program: Command = new Command();
         program
             .description('How to use gplayuploader')
@@ -48,16 +47,16 @@ class CLIRunner {
                 '-a, --authenticationPath <path/to/authentication.json>',
                 'JSON file that contains private key and client email'
             )
-            .option('-r, --recentChanges [message]', 'Recent changes message', this.collectParameterValues)
+            .option('-r, --recentChanges [message]', 'Recent changes message', CLIRunner.collectParameterValues)
             .option(
                 '-f, --filePaths <path/to.apk>..<path/>to.aab>',
                 'path to apk or app bundle',
-                this.collectParameterValues
+                CLIRunner.collectParameterValues
             )
             .option(
                 '-o, --obbFilePaths <path/to.obb>..<path/to.obb>',
                 'OBBs to upload (optional)',
-                this.collectParameterValues
+                CLIRunner.collectParameterValues
             )
             .option('-p, --rootPath <rootPath>', 'Working path', process.cwd())
             // .option('-l, --logLevel', 'Sets log level')
@@ -66,38 +65,34 @@ class CLIRunner {
         return program;
     }
 
-    private collectParameterValues(value: string, previous: string[]) {
+    private static collectParameterValues(value: string, previous: string[]) {
         if (!Array.isArray(previous)) {
             previous = [];
         }
         return previous.concat([value]);
     }
 
-    private getConfig(parameters) {
-        const config: GPlayUploaderConfig = new GPlayUploaderConfig(parameters);
-
-        return config;
+    private static getConfig(parameters) {
+        return new GPlayUploaderConfig(parameters);
     }
 
-    private async runGPlayUploader(config: GPlayUploaderConfig) {
-        const publisher: AndroidPublisher = await GPlayAuthenticator.authenticate(config);
+    // Main method to instantiate GPlayUploadProcess and its dependencies
+    private static async runGPlayUploader(config: GPlayUploaderConfig) {
+        const authenticator = new GPlayAuthenticatorV3();
+        const publisherAPI: AndroidPublisherAPI = await authenticator.authenticate(config.authenticationPath);
 
         const manifestParser: ManifestParser = new ManifestParser();
-        const editCreator: GPlayEditCreator = new GPlayEditCreator(publisher);
-        const apkUploader: GPlayApkUploader = new GPlayApkUploader(publisher);
-        const bundleUploader: GPlayBundleUploader = new GPlayBundleUploader(publisher);
-        const obbUploader: GPlayObbUploader = new GPlayObbUploader(publisher);
-        const uploadCompleter: GPlayUploadCompleter = new GPlayUploadCompleter(publisher);
+        const editCreator: GPlayEditCreator = new GPlayEditCreator(publisherAPI);
+        const fileUploader: GPlayFileUploader = new GPlayFileUploader(publisherAPI);
+        const uploadCompleter: GPlayUploadCompleter = new GPlayUploadCompleter(publisherAPI);
 
-        const uploader: GPlayUploader = new GPlayUploader(
+        const uploadProcess: GPlayUploadProcess = new GPlayUploadProcess(
             manifestParser,
             editCreator,
-            apkUploader,
-            bundleUploader,
-            obbUploader,
+            fileUploader,
             uploadCompleter
         );
-        return await uploader.start(config);
+        return await uploadProcess.start(config);
     }
 }
 
