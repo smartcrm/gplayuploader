@@ -8,7 +8,7 @@
     },
     "scripts": {
         "start": "nodemon --inspect ./src/cli.ts",
-        "build": "tsc -p .",
+        "build": "ttsc -p .",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
         "format-check": "prettier --config ./.prettierrc --check ./**/*{.ts,.js,.json,.css,.scss}",
         "format": "prettier --config ./.prettierrc --write ./**/*{.ts,.js,.json,.css,.scss}"
