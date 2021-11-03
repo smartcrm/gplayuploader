@@ -9,7 +9,7 @@ import { ObbUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceType
  * Abstraction of the Android Publisher API. If you want to update this project to a newer version of the API you only
  * have to re-implement this interface.
  */
-export interface AndroidPublisherAPI {
+export interface AndroidPublisher {
     generateEditId(packageName: string): Promise<string>;
 
     uploadApp(filePath: string, uploadParameters: BasicUploadParameters): Promise<AppUploadResult>;

@@ -1,9 +1,9 @@
-import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
 import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
 import { TrackUpdateParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/TrackUpdateParameters';
 import { AppUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/AppUploadResult';
 import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
-import { UploadConfigGeneratorAPI } from 'GPlayUploader/AndroidPublisherAPI/UploadConfigGeneratorAPI';
+import { UploadConfigGenerator } from 'GPlayUploader/AndroidPublisherAPI/UploadConfigGenerator';
 import { FileUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/FileUploadConfig';
 import { ObbUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/ObbUploadConfig';
 import { getTrackUpdateConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/Utilities';
@@ -12,13 +12,13 @@ import { isAABFilePath } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
 import { androidpublisher_v3 } from 'googleapis';
 import { ObbUploadResult } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadResult';
 
-export class AndroidPublisherV3 implements AndroidPublisherAPI {
+export class AndroidPublisherV3 implements AndroidPublisher {
     private readonly publisher: androidpublisher_v3.Androidpublisher;
-    private readonly uploadConfigGenerator: UploadConfigGeneratorAPI<FileUploadConfig, ObbUploadConfig>;
+    private readonly uploadConfigGenerator: UploadConfigGenerator<FileUploadConfig, ObbUploadConfig>;
 
     constructor(
         publisher: androidpublisher_v3.Androidpublisher,
-        uploadConfigGenerator: UploadConfigGeneratorAPI<FileUploadConfig, ObbUploadConfig>
+        uploadConfigGenerator: UploadConfigGenerator<FileUploadConfig, ObbUploadConfig>
     ) {
         this.publisher = publisher;
         this.uploadConfigGenerator = uploadConfigGenerator;

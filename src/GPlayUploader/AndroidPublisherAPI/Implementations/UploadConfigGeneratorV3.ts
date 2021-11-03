@@ -1,11 +1,11 @@
 import { createReadStream } from 'fs';
-import { UploadConfigGeneratorAPI } from 'GPlayUploader/AndroidPublisherAPI/UploadConfigGeneratorAPI';
+import { UploadConfigGenerator } from 'GPlayUploader/AndroidPublisherAPI/UploadConfigGenerator';
 import { FileUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/FileUploadConfig';
 import { ObbUploadConfig } from 'GPlayUploader/AndroidPublisherAPI/Implementations/Utilities/ObbUploadConfig';
 import { ObbUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/ObbUploadParameters';
 import { BasicUploadParameters } from 'GPlayUploader/AndroidPublisherAPI/InterfaceTypes/BasicUploadParameters';
 
-export class UploadConfigGeneratorV3 implements UploadConfigGeneratorAPI<FileUploadConfig, ObbUploadConfig> {
+export class UploadConfigGeneratorV3 implements UploadConfigGenerator<FileUploadConfig, ObbUploadConfig> {
     generateAppUploadConfig(filePath: string, parameters: BasicUploadParameters, mimeType?: string): FileUploadConfig {
         const uploadConfig: FileUploadConfig = {
             packageName: parameters.packageName,

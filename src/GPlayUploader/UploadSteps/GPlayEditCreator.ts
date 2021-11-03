@@ -1,10 +1,10 @@
-import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
 import { log } from 'GPlayUploader/UploadSteps/Utilities/Utilities';
 
 export class GPlayEditCreator {
-    private readonly publisher: AndroidPublisherAPI;
+    private readonly publisher: AndroidPublisher;
 
-    constructor(publisher: AndroidPublisherAPI) {
+    constructor(publisher: AndroidPublisher) {
         this.publisher = publisher;
     }
 

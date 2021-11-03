@@ -1,9 +1,9 @@
 import { google } from 'googleapis';
-import { GPlayAuthenticatorAPI } from 'GPlayUploader/AndroidPublisherAPI/GPlayAuthenticatorAPI';
+import { GPlayAuthenticator } from 'GPlayUploader/AndroidPublisherAPI/GPlayAuthenticator';
 import { AndroidPublisherV3 } from 'GPlayUploader/AndroidPublisherAPI/Implementations/AndroidPublisherV3';
 import { UploadConfigGeneratorV3 } from 'GPlayUploader/AndroidPublisherAPI/Implementations/UploadConfigGeneratorV3';
 
-export class GPlayAuthenticatorV3 implements GPlayAuthenticatorAPI {
+export class GPlayAuthenticatorV3 implements GPlayAuthenticator {
     async authenticate(authenticationPath: string): Promise<AndroidPublisherV3> {
         log('> Authenticating');
         const client = await google.auth.getClient({

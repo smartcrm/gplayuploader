@@ -7,7 +7,7 @@ import { GPlayAuthenticatorV3 } from 'GPlayUploader/AndroidPublisherAPI/Implemen
 import { GPlayEditCreator } from 'GPlayUploader/UploadSteps/GPlayEditCreator';
 import { GPlayUploadCompleter } from 'GPlayUploader/UploadSteps/GPlayUploadCompleter';
 import { ManifestParser } from 'GPlayUploader/UploadSteps/ManifestParser';
-import { AndroidPublisherAPI } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisherAPI';
+import { AndroidPublisher } from 'GPlayUploader/AndroidPublisherAPI/AndroidPublisher';
 import { GPlayFileUploader } from 'GPlayUploader/UploadSteps/GPlayFileUploader';
 
 class CLIRunner {
@@ -79,7 +79,7 @@ class CLIRunner {
     // Main method to instantiate GPlayUploadProcess and its dependencies
     private static async runGPlayUploader(config: GPlayUploaderConfig) {
         const authenticator = new GPlayAuthenticatorV3();
-        const publisherAPI: AndroidPublisherAPI = await authenticator.authenticate(config.authenticationPath);
+        const publisherAPI: AndroidPublisher = await authenticator.authenticate(config.authenticationPath);
 
         const manifestParser: ManifestParser = new ManifestParser();
         const editCreator: GPlayEditCreator = new GPlayEditCreator(publisherAPI);
