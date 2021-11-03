@@ -12,7 +12,7 @@ export declare class GPlayUploaderConfig {
         track,
         authenticationPath,
         recentChanges,
-        apkFilePaths,
+        filePaths,
         obbFilePaths,
         rootPath
     }: {
@@ -20,7 +20,7 @@ export declare class GPlayUploaderConfig {
         track?: string;
         authenticationPath?: string;
         recentChanges?: string[];
-        apkFilePaths?: string[];
+        filePaths?: string[];
         obbFilePaths?: string[];
         rootPath: string;
     });

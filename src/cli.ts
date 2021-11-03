@@ -34,7 +34,7 @@ class CLIRunner {
         }
     }
 
-    private static configureProgram() {
+    private static configureProgram(): Command {
         const program: Command = new Command();
         program
             .description('How to use gplayuploader')

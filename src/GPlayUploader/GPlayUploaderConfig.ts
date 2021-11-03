@@ -18,7 +18,7 @@ export class GPlayUploaderConfig {
         track,
         authenticationPath,
         recentChanges,
-        apkFilePaths,
+        filePaths,
         obbFilePaths,
         rootPath
     }: {
@@ -26,7 +26,7 @@ export class GPlayUploaderConfig {
         track?: string;
         authenticationPath?: string;
         recentChanges?: string[];
-        apkFilePaths?: string[];
+        filePaths?: string[];
         obbFilePaths?: string[];
         rootPath: string;
     }) {
@@ -36,7 +36,7 @@ export class GPlayUploaderConfig {
         this.track = track;
         this.authenticationPath = authenticationPath;
         this.recentChanges = recentChanges;
-        this.filePaths = apkFilePaths;
+        this.filePaths = filePaths;
         this.obbFilePaths = obbFilePaths;
     }
 
