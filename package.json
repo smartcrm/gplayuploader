@@ -2,13 +2,14 @@
     "name": "gplayuploader",
     "version": "1.0.0",
     "description": "uploads apk to playstore",
-    "main": "./lib/GPlayUploader/GPlayUploader.js",
+    "main": "./lib/GPlayUploader/GPlayUploadProcess.js",
     "bin": {
         "gplayuploader": "./lib/cli.js"
     },
     "scripts": {
         "start": "nodemon --inspect ./src/cli.ts",
         "build": "ttsc -p .",
+        "test": "npm run build & node ./lib/cli.js",
         "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
         "format-check": "prettier --config ./.prettierrc --check ./**/*{.ts,.js,.json,.css,.scss}",
         "format": "prettier --config ./.prettierrc --write ./**/*{.ts,.js,.json,.css,.scss}"

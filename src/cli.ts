@@ -78,6 +78,7 @@ class CLIRunner {
 
     // Main method to instantiate GPlayUploadProcess and its dependencies
     private static async runGPlayUploader(config: GPlayUploaderConfig) {
+        console.log('Hi');
         const authenticator = new GPlayAuthenticatorV3();
         const publisherAPI: AndroidPublisher = await authenticator.authenticate(config.authenticationPath);
 
