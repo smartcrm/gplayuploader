@@ -3,6 +3,14 @@
 import { Command } from 'commander';
 import { GPlayUploaderConfig } from './GPlayUploader/GPlayUploaderConfig';
 import { GPlayUploader } from './GPlayUploader/GPlayUploader';
+import { GPlayAuthenticator } from 'GPlayUploader/GPlayAuthenticator';
+import { AndroidPublisher } from 'GPlayUploader/Utilities/Types';
+import { GPlayEditCreator } from 'GPlayUploader/UploadSteps/GPlayEditCreator';
+import { GPlayApkUploader } from 'GPlayUploader/UploadSteps/GPlayApkUploader';
+import { GPlayBundleUploader } from 'GPlayUploader/UploadSteps/GPlayBundleUploader';
+import { GPlayObbUploader } from 'GPlayUploader/UploadSteps/GPlayObbUploader';
+import { GPlayUploadCompleter } from 'GPlayUploader/UploadSteps/GPlayUploadCompleter';
+import { ManifestParser } from 'GPlayUploader/UploadSteps/ManifestParser';
 
 class CLIRunner {
     static async run() {
@@ -41,7 +49,11 @@ class CLIRunner {
                 'JSON file that contains private key and client email'
             )
             .option('-r, --recentChanges [message]', 'Recent changes message', this.collectParameterValues)
-            .option('-f, --apkFilePaths <path/to.apk>', 'APKs to upload', this.collectParameterValues)
+            .option(
+                '-f, --filePaths <path/to.apk>..<path/>to.aab>',
+                'path to apk or app bundle',
+                this.collectParameterValues
+            )
             .option(
                 '-o, --obbFilePaths <path/to.obb>..<path/to.obb>',
                 'OBBs to upload (optional)',
@@ -68,8 +80,24 @@ class CLIRunner {
     }
 
     private async runGPlayUploader(config: GPlayUploaderConfig) {
-        const gPlayUploader: GPlayUploader = new GPlayUploader(config);
-        return await gPlayUploader.start();
+        const publisher: AndroidPublisher = await GPlayAuthenticator.authenticate(config);
+
+        const manifestParser: ManifestParser = new ManifestParser();
+        const editCreator: GPlayEditCreator = new GPlayEditCreator(publisher);
+        const apkUploader: GPlayApkUploader = new GPlayApkUploader(publisher);
+        const bundleUploader: GPlayBundleUploader = new GPlayBundleUploader(publisher);
+        const obbUploader: GPlayObbUploader = new GPlayObbUploader(publisher);
+        const uploadCompleter: GPlayUploadCompleter = new GPlayUploadCompleter(publisher);
+
+        const uploader: GPlayUploader = new GPlayUploader(
+            manifestParser,
+            editCreator,
+            apkUploader,
+            bundleUploader,
+            obbUploader,
+            uploadCompleter
+        );
+        return await uploader.start(config);
     }
 }
 
