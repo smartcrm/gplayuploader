@@ -6,9 +6,15 @@
         "declaration": true,
         "outDir": "lib",
         "rootDir": "src",
+        "baseUrl": "src",
         "sourceMap": true,
         "types": ["node"],
         "esModuleInterop": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "plugins": [
+            {
+                "transform": "@zerollup/ts-transform-paths"
+            }
+        ]
     }
 }

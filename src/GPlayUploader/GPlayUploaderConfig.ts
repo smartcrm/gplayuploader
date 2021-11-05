@@ -8,7 +8,7 @@ export class GPlayUploaderConfig {
     private _track: string;
     private _authenticationPath: string;
     private _recentChanges: string[] = [];
-    private _apkFilePaths: string[] = [];
+    private _filePaths: string[] = [];
     private _obbFilePaths: string[] = [];
 
     private _rootPath: string;
@@ -18,7 +18,7 @@ export class GPlayUploaderConfig {
         track,
         authenticationPath,
         recentChanges,
-        apkFilePaths,
+        filePaths,
         obbFilePaths,
         rootPath
     }: {
@@ -26,7 +26,7 @@ export class GPlayUploaderConfig {
         track?: string;
         authenticationPath?: string;
         recentChanges?: string[];
-        apkFilePaths?: string[];
+        filePaths?: string[];
         obbFilePaths?: string[];
         rootPath: string;
     }) {
@@ -36,7 +36,7 @@ export class GPlayUploaderConfig {
         this.track = track;
         this.authenticationPath = authenticationPath;
         this.recentChanges = recentChanges;
-        this.apkFilePaths = apkFilePaths;
+        this.filePaths = filePaths;
         this.obbFilePaths = obbFilePaths;
     }
 
@@ -72,14 +72,14 @@ export class GPlayUploaderConfig {
         this._recentChanges = value;
     }
 
-    get apkFilePaths() {
-        return this._apkFilePaths;
+    get filePaths() {
+        return this._filePaths;
     }
 
-    set apkFilePaths(value: string[]) {
+    set filePaths(value: string[]) {
         try {
             value.forEach((pathValue) => {
-                this._apkFilePaths.push(path.resolve(this._rootPath, pathValue));
+                this._filePaths.push(path.resolve(this._rootPath, pathValue));
             });
         } catch (e) {
             throw new Error('APK Paths are wrong.');
@@ -101,14 +101,14 @@ export class GPlayUploaderConfig {
     }
 
     isValidConfig() {
-        return this.isApkFilePathsValid() && this.isTrackValid() && this.isAuthenticationPathSet();
+        return this.isFilePathsValid() && this.isTrackValid() && this.isAuthenticationPathSet();
     }
 
-    isApkFilePathsValid() {
-        if (this.apkFilePaths.length < 0) {
+    isFilePathsValid() {
+        if (this.filePaths.length < 0) {
             return false;
         }
-        this.apkFilePaths.forEach((filePath) => {
+        this.filePaths.forEach((filePath) => {
             if (typeof filePath !== 'string' || !Boolean(filePath.trim())) {
                 return false;
             }
