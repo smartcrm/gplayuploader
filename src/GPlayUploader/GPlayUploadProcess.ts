@@ -23,14 +23,14 @@ export class GPlayUploadProcess {
             const uploadParameters: BasicUploadParameters = { packageName, editId };
             const uploadResults = await this.fileUploader.uploadAppPaths(uploaderConfig.filePaths, uploadParameters);
 
-            const oobUploadParameters: ObbUploadParameters = {
+            const obbUploadParameters: ObbUploadParameters = {
                 ...uploadParameters,
-                versionCodes: GPlayUploadProcess.getVersionCodeFromUploadResults(uploadResults)
+                versionCodes: GPlayUploadProcess.getVersionCodesFromUploadResults(uploadResults)
             };
-            await this.fileUploader.uploadObbFilePaths(uploaderConfig.obbFilePaths, oobUploadParameters);
+            await this.fileUploader.uploadObbFilePaths(uploaderConfig.obbFilePaths, obbUploadParameters);
 
             const trackUpdateParameters: TrackUpdateParameters = {
-                ...oobUploadParameters,
+                ...obbUploadParameters,
                 track: uploaderConfig.track
             };
             await this.uploadCompleter.assignTrackAndReleaseNotes(trackUpdateParameters);
@@ -41,7 +41,7 @@ export class GPlayUploadProcess {
         }
     }
 
-    private static getVersionCodeFromUploadResults(uploadResults: AppUploadResult[]): number[] {
+    private static getVersionCodesFromUploadResults(uploadResults: AppUploadResult[]): number[] {
         return uploadResults.map((uploadResult: AppUploadResult) => {
             return uploadResult.versionCode;
         });
