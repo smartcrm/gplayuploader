@@ -4,18 +4,19 @@ import { isAABFilePath, log } from 'GPlayUploader/UploadSteps/Utilities/Utilitie
 
 export class ManifestParser {
     async getPackageNameFromManifest(pathToPackage): Promise<string> {
-        log('> Parsing manifest');
-        const packageName = await this.parseManifestAndReturnPackageName(pathToPackage);
+        log(`> Parsing manifest in path ${pathToPackage}`);
+        const packageName: string = await this.parseManifestAndReturnPackageName(pathToPackage);
         log(`> Detected package name ${packageName}`);
         return packageName;
     }
 
-    private async parseManifestAndReturnPackageName(pathToPackage: string) {
+    private async parseManifestAndReturnPackageName(pathToPackage: string): Promise<string> {
         if (isAABFilePath(pathToPackage)) {
             const manifest = await readManifest(pathToPackage);
             return manifest.packageName;
         }
-        const manifest = await ApkReader.open(pathToPackage).readManifest();
+        const apkReader = await ApkReader.open(pathToPackage);
+        const manifest = await apkReader.readManifest();
         return await manifest.package;
     }
 }
